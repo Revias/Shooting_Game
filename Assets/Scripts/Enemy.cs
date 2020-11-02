@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
     public float speed = 5;
     Vector3 dir;
+    public GameObject explosionFactory;
 
     void Start()
     {
@@ -35,8 +36,15 @@ public class Enemy : MonoBehaviour
     }
     private void OnCollisionEnter(Collision other)
     {
-        Destroy(other.gameObject);
+        // 폭팔 효과
+        GameObject explosion = Instantiate(explosionFactory);
+        // 폭팔 효과 위치
+        explosion.transform.position = transform.position;
 
+        // 점수 갱신
+        ScoreManager.Instance.Score++;
+
+        Destroy(other.gameObject);
         Destroy(gameObject);
     }
 }
