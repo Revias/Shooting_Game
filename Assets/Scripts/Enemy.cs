@@ -11,7 +11,6 @@ public class Enemy : MonoBehaviour
     void Start()
     {
 
-
         int randValue = UnityEngine.Random.Range(0, 10);
 
         if (randValue < 3)
@@ -41,10 +40,23 @@ public class Enemy : MonoBehaviour
         // 폭팔 효과 위치
         explosion.transform.position = transform.position;
 
+        if (other.gameObject.name.Contains("Bullet"))
+        {
+            other.gameObject.SetActive(false);
+
+            PlayerFire player = GameObject.Find("Player").GetComponent<PlayerFire>();
+            player.bulletObjectPool.Add(other.gameObject);
+        }
+        else
+        {
+            Destroy(other.gameObject);
+        }
+        gameObject.SetActive(false);
+        GameObject emObject = GameObject.Find("EnemyManager");
+        EnemyManager manager = emObject.GetComponent<EnemyManager>();
+        manager.enemyObjectPool.Add(gameObject);
+
         // 점수 갱신
         ScoreManager.Instance.Score++;
-
-        Destroy(other.gameObject);
-        Destroy(gameObject);
     }
 }
